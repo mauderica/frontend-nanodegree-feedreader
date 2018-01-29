@@ -8,12 +8,12 @@
  * since some of these tests may require DOM elements. We want
  * to ensure they don't run until the DOM is ready.
  */
-$(function() {
+$(function () {
     /* This is our first test suite - a test suite just contains
     * a related set of tests. This suite is all about the RSS
     * feeds definitions, the allFeeds variable in our application.
     */
-    describe('RSS Feeds', function() {
+    describe('RSS Feeds', () => {
         /* This is our first test - it tests to make sure that the
          * allFeeds variable has been defined and that it is not
          * empty. Experiment with this before you get started on
@@ -21,7 +21,7 @@ $(function() {
          * allFeeds in app.js to be an empty array and refresh the
          * page?
          */
-        it('are defined', function() {
+        it('are defined', () => {
             expect(allFeeds).toBeDefined();
             expect(allFeeds.length).not.toBe(0);
         });
@@ -31,42 +31,200 @@ $(function() {
          * in the allFeeds object and ensures it has a URL defined
          * and that the URL is not empty.
          */
+        it('have URL defined and not empty', () => {
+            allFeeds.forEach((feed) => {
+                expect(feed.url).toBeDefined();
+                expect(feed.url).not.toBe('');
+            });
+        });
 
 
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
          */
+        it('have name defined and not empty', () => {
+            allFeeds.forEach((feed) => {
+                expect(feed.name).toBeDefined();
+                expect(feed.name).not.toBe('');
+            });
+        });
     });
 
 
     /* TODO: Write a new test suite named "The menu" */
-
+    describe('The menu', () => {
         /* TODO: Write a test that ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
+        const bodyElem = $('body'),
+            menuIcon = $('.menu-icon-link');
+        let menuHidden;
+        const menuStatus = () => bodyElem.hasClass('menu-hidden');
+        const menuTrigger = () => menuIcon.triggerHandler('click');
 
-         /* TODO: Write a test that ensures the menu changes
-          * visibility when the menu icon is clicked. This test
-          * should have two expectations: does the menu display when
-          * clicked and does it hide when clicked again.
-          */
+        it('is hidden by default', () => {
+            menuHidden = menuStatus();
+            expect(menuHidden).toBe(true);
+        });
+
+
+        /* TODO: Write a test that ensures the menu changes
+         * visibility when the menu icon is clicked. This test
+         * should have two expectations: does the menu display when
+         * clicked and does it hide when clicked again.
+         */
+        it('changes visibility when the menu icon is clicked', () => {
+            // expect the menu to display when clicked:
+            menuTrigger();
+            menuHidden = menuStatus();
+            expect(menuHidden).toBe(false);
+            // expect the menu to be hidden when clicked again:
+            menuTrigger();
+            menuHidden = menuStatus();
+            expect(menuHidden).toBe(true);
+        });
+    });
+
 
     /* TODO: Write a new test suite named "Initial Entries" */
-
+    describe('Initial Entries', () => {
         /* TODO: Write a test that ensures when the loadFeed
          * function is called and completes its work, there is at least
          * a single .entry element within the .feed container.
          * Remember, loadFeed() is asynchronous so this test will require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
+        const feedContainer = $('.feed');
+        const findEntries = () => feedContainer.find('.entry');
+        let entriesObject,
+            entryQuantity;
+
+        beforeEach(done => loadFeed(0, done));
+
+        it('contain at least one entry', () => {
+            entriesObject = findEntries();
+            entryQuantity = entriesObject.length;
+            expect(entryQuantity).toBeGreaterThan(0);
+        });
+    });
+
+
+    // /* TODO: Write a new test suite named "New Feed Selection" */
+    // describe('New Feed Selection', () => {
+    //     /* TODO: Write a test that ensures when a new feed is loaded
+    //         * by the loadFeed function that the content actually changes.
+    //         * Remember, loadFeed() is asynchronous.
+    //         */
+    //     const feedContainer = $('.feed');
+    //     const findEntries = () => feedContainer.find('*');
+    //     // The below won't work because it is only saving the address to the DOM elements at that time,
+    //     // which will be cleared and changed once loadFeed is run again
+    //     const entriesInitial = findEntries();
+    //     console.log(entriesInitial);
+    //     let entriesNew;
+
+    //     beforeEach(done => {
+    //         loadFeed(1, done);
+    //     });
+
+    //     // I think the <h2> text and <a> href text need to be compared --> save those in arrays and loop through to compare?
+    //     it('actually changes the page content to a new feed', () => {
+    //         entriesNew = findEntries();
+    //         expect(entriesInitial).not.toBe(entriesNew);
+    //     });
+    // });
+
+    // /* TODO: Write a new test suite named "New Feed Selection" */
+    // describe('New Feed Selection', () => {
+    //     /* TODO: Write a test that ensures when a new feed is loaded
+    //      * by the loadFeed function that the content actually changes.
+    //      * Remember, loadFeed() is asynchronous.
+    //      */
+    //     const feedContainer = $('.feed');
+    //     const findEntryTitles = () => feedContainer.find('.entry h2');
+    //     const getTitlesText = (object) => {
+    //         const length = object.length;
+    //         let titles = [];
+    //         let title;
+    //         for(let i = 0; i < length; i++) {
+    //             title = object[i].text();
+    //             titles.push(title);
+    //         }
+    //         console.log(titles);
+    //         return titles;
+    //     }
+    //     const initialTitlesObj = findEntryTitles();
+    //     const initialTitlesTxt = getTitlesText(initialTitlesObj);
+    //     let newTitlesObj,
+    //         newTitlesTxt;
+
+    //     beforeEach(done => {
+    //         loadFeed(1, done);
+    //     });
+
+    //     it('actually changes the page content to a new feed', () => {
+    //         newTitlesObj = findEntryTitles();
+    //         newTitlesTxt = getTitlesText(newTitlesObj);
+    //         console.log(newTitlesTxt);
+    //         expect(initialTitlesTxt).not.toBe(newTitlesTxt);
+    //     });
+    // });
+
+    // /* TODO: Write a new test suite named "New Feed Selection" */
+    // describe('New Feed Selection', () => {
+    //     /* TODO: Write a test that ensures when a new feed is loaded
+    //         * by the loadFeed function that the content actually changes.
+    //         * Remember, loadFeed() is asynchronous.
+    //         */
+    //     const feedContainer = $('.feed');
+    //     const getEntryLink = () => feedContainer.find('.entry-link').attr('href');
+    //     const initEntryLink = getEntryLink();
+    //     console.log(initEntryLink); // Why does this log 'undefined'?
+    //     let newEntryLink;
+
+    //     beforeEach(done => {
+    //         loadFeed(1, done);
+    //     });
+
+    //     it('actually changes the page content to a new feed', () => {
+    //         newEntryLink = getEntryLink();
+    //         console.log(newEntryLink);
+    //         expect(initEntryLink).not.toMatch(newEntryLink);
+    //     });
+    // });
 
     /* TODO: Write a new test suite named "New Feed Selection" */
-
+    describe('New Feed Selection', () => {
         /* TODO: Write a test that ensures when a new feed is loaded
-         * by the loadFeed function that the content actually changes.
-         * Remember, loadFeed() is asynchronous.
-         */
+            * by the loadFeed function that the content actually changes.
+            * Remember, loadFeed() is asynchronous.
+            */
+        const feedContainer = $('.feed');
+        const getEntryLink = () => feedContainer.find('.entry-link').attr('href');
+        let initEntryLink,
+            newEntryLink;
+
+        // async-operation-chaining
+        beforeEach(done => {
+            loadFeed(0, () => {
+                console.log('>> loadFeed(0)');
+                initEntryLink = getEntryLink();
+                console.log(initEntryLink);
+                loadFeed(1, () => {
+                    console.log('>> loadFeed(1)');
+                    loadFeed(2, done);
+                });
+            });
+        });
+
+        it('actually changes the page content to a new feed', () => {
+            newEntryLink = getEntryLink();
+            console.log(newEntryLink);
+            expect(initEntryLink).not.toMatch(newEntryLink);
+        });
+    });
+
 }());
