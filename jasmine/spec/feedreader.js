@@ -123,7 +123,6 @@ $(function () {
         let initEntryLink,
             newEntryLink;
 
-        // async-operation-chaining
         beforeEach(done => {
             loadFeed(0, () => {
                 initEntryLink = getEntryLink();
