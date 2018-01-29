@@ -112,90 +112,6 @@ $(function () {
     });
 
 
-    // /* TODO: Write a new test suite named "New Feed Selection" */
-    // describe('New Feed Selection', () => {
-    //     /* TODO: Write a test that ensures when a new feed is loaded
-    //         * by the loadFeed function that the content actually changes.
-    //         * Remember, loadFeed() is asynchronous.
-    //         */
-    //     const feedContainer = $('.feed');
-    //     const findEntries = () => feedContainer.find('*');
-    //     // The below won't work because it is only saving the address to the DOM elements at that time,
-    //     // which will be cleared and changed once loadFeed is run again
-    //     const entriesInitial = findEntries();
-    //     console.log(entriesInitial);
-    //     let entriesNew;
-
-    //     beforeEach(done => {
-    //         loadFeed(1, done);
-    //     });
-
-    //     // I think the <h2> text and <a> href text need to be compared --> save those in arrays and loop through to compare?
-    //     it('actually changes the page content to a new feed', () => {
-    //         entriesNew = findEntries();
-    //         expect(entriesInitial).not.toBe(entriesNew);
-    //     });
-    // });
-
-    // /* TODO: Write a new test suite named "New Feed Selection" */
-    // describe('New Feed Selection', () => {
-    //     /* TODO: Write a test that ensures when a new feed is loaded
-    //      * by the loadFeed function that the content actually changes.
-    //      * Remember, loadFeed() is asynchronous.
-    //      */
-    //     const feedContainer = $('.feed');
-    //     const findEntryTitles = () => feedContainer.find('.entry h2');
-    //     const getTitlesText = (object) => {
-    //         const length = object.length;
-    //         let titles = [];
-    //         let title;
-    //         for(let i = 0; i < length; i++) {
-    //             title = object[i].text();
-    //             titles.push(title);
-    //         }
-    //         console.log(titles);
-    //         return titles;
-    //     }
-    //     const initialTitlesObj = findEntryTitles();
-    //     const initialTitlesTxt = getTitlesText(initialTitlesObj);
-    //     let newTitlesObj,
-    //         newTitlesTxt;
-
-    //     beforeEach(done => {
-    //         loadFeed(1, done);
-    //     });
-
-    //     it('actually changes the page content to a new feed', () => {
-    //         newTitlesObj = findEntryTitles();
-    //         newTitlesTxt = getTitlesText(newTitlesObj);
-    //         console.log(newTitlesTxt);
-    //         expect(initialTitlesTxt).not.toBe(newTitlesTxt);
-    //     });
-    // });
-
-    // /* TODO: Write a new test suite named "New Feed Selection" */
-    // describe('New Feed Selection', () => {
-    //     /* TODO: Write a test that ensures when a new feed is loaded
-    //         * by the loadFeed function that the content actually changes.
-    //         * Remember, loadFeed() is asynchronous.
-    //         */
-    //     const feedContainer = $('.feed');
-    //     const getEntryLink = () => feedContainer.find('.entry-link').attr('href');
-    //     const initEntryLink = getEntryLink();
-    //     console.log(initEntryLink); // Why does this log 'undefined'?
-    //     let newEntryLink;
-
-    //     beforeEach(done => {
-    //         loadFeed(1, done);
-    //     });
-
-    //     it('actually changes the page content to a new feed', () => {
-    //         newEntryLink = getEntryLink();
-    //         console.log(newEntryLink);
-    //         expect(initEntryLink).not.toMatch(newEntryLink);
-    //     });
-    // });
-
     /* TODO: Write a new test suite named "New Feed Selection" */
     describe('New Feed Selection', () => {
         /* TODO: Write a test that ensures when a new feed is loaded
@@ -210,19 +126,13 @@ $(function () {
         // async-operation-chaining
         beforeEach(done => {
             loadFeed(0, () => {
-                console.log('>> loadFeed(0)');
                 initEntryLink = getEntryLink();
-                console.log(initEntryLink);
-                loadFeed(1, () => {
-                    console.log('>> loadFeed(1)');
-                    loadFeed(2, done);
-                });
+                loadFeed(1, done);
             });
         });
 
         it('actually changes the page content to a new feed', () => {
             newEntryLink = getEntryLink();
-            console.log(newEntryLink);
             expect(initEntryLink).not.toMatch(newEntryLink);
         });
     });
